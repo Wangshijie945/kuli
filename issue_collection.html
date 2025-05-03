@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>经典问题处理收集</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a5fb4;
+            background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.1) 0px, rgba(255,255,255,0.1) 10px, transparent 10px, transparent 20px);
+            color: white;
+            padding: 20px;
+            position: relative;
+        }
+        
+        body::before {
+            content: "中国铁通";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 80px;
+            font-weight: bold;
+            color: rgba(255,255,255,0.1);
+            z-index: -1;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #fff;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        input[type="text"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: rgba(255,255,255,0.9);
+        }
+        
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+        
+        button {
+            background-color: #ff8c00;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            margin: 0 auto;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #e67e00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>经典问题处理收集表</h1>
+        <form id="issueForm">
+            <div class="form-group">
+                <label for="issue">问题描述:</label>
+                <input type="text" id="issue" name="issue" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="location">问题发生地址:</label>
+                <input type="text" id="location" name="location" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="businessType">业务类型:</label>
+                <select id="businessType" name="businessType" required>
+                    <option value="">请选择业务类型</option>
+                    <option value="宽带">宽带</option>
+                    <option value="固话">固话</option>
+                    <option value="专线">专线</option>
+                    <option value="其他">其他</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="solution">解决方法和过程:</label>
+                <textarea id="solution" name="solution" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="handlerName">处理人姓名:</label>
+                <input type="text" id="handlerName" name="handlerName" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="handlerPhone">处理人电话:</label>
+                <input type="tel" id="handlerPhone" name="handlerPhone" required>
+            </div>
+            
+            <button type="submit">提交</button>
+        </form>
+    </div>
+    
+    <script>
+        document.getElementById('issueForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = {
+                issue: formData.get('issue'),
+                location: formData.get('location'),
+                businessType: formData.get('businessType'),
+                solution: formData.get('solution'),
+                handlerName: formData.get('handlerName'),
+                handlerPhone: formData.get('handlerPhone')
+            };
+            
+            fetch('/save_issue', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('问题已提交成功！');
+                this.reset();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('提交失败，请稍后再试');
+            });
+        });
+    </script>
+</body>
+</html>
